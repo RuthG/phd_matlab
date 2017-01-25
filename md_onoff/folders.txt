@@ -1,0 +1,28 @@
+Summary of contents of folders
+
+0105 - fourier transforms of v, w (as per Toulouse plots), snapshots
+0112 - composites, time series of ffts
+0119 - as above
+0126 - snapshots with front diag overlaid, more ffts
+0202 - first 2d vt histograms. w width histograms
+0209 - stability mechanism thinking, first attempts at heat budget plots
+0216 - dthetadp snapshots, heat budget checking
+0223 - start of htrt pdfs, T' pdfs, more heat budget thinking
+0302 - v'T' distributions, 2d htrt histograms
+0309 - attempts at overlaying 2d htrt histograms, more composites, trying to fit damping coeffs
+0316 - more damping coef attempts, T' pdfs, first attempts to tidy work for paper
+0323 - calculating moist theta, starts at something looking like the v'T' av paper figures, plost of v'T' total and assoc with +-T, composites of stability
+0330 - first vt paper plot, histograms of advective terms, histograms of htrts associated with given T ranges
+0404 - checking of totttend, T range htrt histograms, v'H' plots
+0413 - more htrt filtered histograms, overlayed; ditto T' hist plots, attempts at logscale hists and hists showing asymmetry. histograms of advtend
+0420 - dthetadp snapshots, more vt paper plots at dif levels, general pressure level checks. More htrt histograms for all diags and all filters. Analysis of diffusion coeff. Checking of correlation coeffs. Htrt snapshots
+0507 - model updates, pbl and richardson no
+0511 - more diffusion coeff checks and thinking. plots of v'T' mean with pressure for cold and warm at lats of max. Looking at different sections of atmosphere. Snapshots at different pressure levels. Correlation coeff and sd pressure-lat plots
+0518 - sensible and evaporative heating snapshots, histograms at all levels 
+0525 - checking of correlation coeff and sd changes with es0. Splitting of blayer, trop, strat. Rel vort maps
+0601 - paper plots of sds and v'H' in diff layers
+0608 - htrt composites, hoffmuller plots, autocorrelation plots, overplotted composites, histograms of terms in variance equation, v'T' blayer trop combo plot, v' histograms for + and - T', checks of applicability of variance equation
+0615 - damping coefficient calculations. Checking variance equation parts
+0622 - data loading and plots for final runs 
+0629 - checks of energy fluxes, damping coeffs for rad on run, advtend, tottend, htrt hists, location of max heat transport and redoing of paper plots for this as check
+0706 - locate fronts in new data, load vorticity for year 5

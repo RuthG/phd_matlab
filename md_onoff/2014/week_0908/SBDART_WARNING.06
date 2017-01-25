@@ -1,0 +1,16 @@
+WARNING >>>>> CHEKIN--vertical temperature step may be too large for good accuracy
+
+######################################################################
+
+$INPUT
+  wlinf = 8.0
+  wlsup = 14.0
+  wlinc = 0.005
+  idatm = 0
+  sza =  35.0
+  iout = 11
+  isalb = 0
+  albcon = 0.06
+  kdist = 3
+  btemp =  283.2
+$end

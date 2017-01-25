@@ -1,0 +1,172 @@
+%load in v'T' for one day and make plots at each pressure
+
+
+% choose directory, load grid
+rDir='/project/rg312/wv_on_rad_off/run_000_best/';
+xc=rdmds([rDir,'XC']);
+yc=rdmds([rDir,'YC']);
+xg=rdmds([rDir,'XG']);
+yg=rdmds([rDir,'YG']);
+hc=rdmds([rDir,'hFacC']);
+hw=rdmds([rDir,'hFacW']);
+hs=rdmds([rDir,'hFacS']);
+ar=rdmds([rDir,'RAC']);
+rC=squeeze(rdmds([rDir,'RC']));
+AngleCS=rdmds([rDir,'AngleCS']);
+AngleSN=rdmds([rDir,'AngleSN']);
+Grid='C';
+ny=90;
+xi=-179:2:180;yi=-89:2:90;
+
+load('/project/rg312/mat_files/front_diag_full_000_best.mat')
+front_diag_000 = arnaud_diag_000(:,:,360); 
+clear('arnaud_diag_000');
+
+
+load('/project/rg312/mat_files/front_diag_full_100_best.mat')
+front_diag_100 = arnaud_diag_100(:,:,360); 
+clear('arnaud_diag_100');
+
+
+
+load('/project/rg312/mat_files/snapshot_data/t_snapshots_best.mat')
+t_ed_000_ll = cube2latlon(xc,yc,t_000(:,:,:,360) - mean(t_000(:,:,:,:),4),xi,yi);
+t_ed_100_ll = cube2latlon(xc,yc,t_100(:,:,:,360) - mean(t_100(:,:,:,:),4),xi,yi);
+clear('t_000','t_010','t_025','t_050','t_075','t_100')
+
+load('/project/rg312/mat_files/snapshot_data/vN_snapshots_best.mat')
+vN_ed_000_ll = cube2latlon(xc,yc,vN_000(:,:,:,360) - mean(vN_000(:,:,:,:),4),xi,yi);
+vN_ed_100_ll = cube2latlon(xc,yc,vN_100(:,:,:,360) - mean(vN_100(:,:,:,:),4),xi,yi);
+clear('vN_000','vN_010','vN_025','vN_050','vN_075','vN_100')
+
+vt_ed_000_ll = vN_ed_000_ll.*t_ed_000_ll;
+vt_ed_100_ll = vN_ed_100_ll.*t_ed_100_ll;
+
+rC=980:-40:20;
+
+
+for i=1:25
+i
+
+figure
+v=-160:10:160;
+[C,h] = contourf(xi,yi,vt_ed_000_ll(:,:,i)',v);
+set(h,'LineColor','none')
+set(gca,'FontSize',15)
+hold on
+v = 0.1;
+[C,h] = contour(xi,yi,front_diag_000',v,'Color',[0.6,0.6,0.6],'LineWidth',2);
+colormap(b2r(-140,140));
+xlim([-180 180])
+ylim([0 90])
+colorbar('FontSize',15)
+ylabel('Latitude')
+xlabel('Longitude')
+titletext = ['v''T'', ' num2str(rC(i)) 'hPa']
+title(titletext);
+name= ['vt_ed_000_l' num2str(i) '.png']
+print('-dpng',name)
+
+figure
+v=-25:1:25;
+[C,h] = contourf(xi,yi,vN_ed_000_ll(:,:,i)',v);
+set(h,'LineColor','none')
+set(gca,'FontSize',15)
+hold on
+v = 0.1;
+[C,h] = contour(xi,yi,front_diag_000',v,'Color',[0.6,0.6,0.6],'LineWidth',2);
+colormap(b2r(-25,25));
+xlim([-180 180])
+ylim([0 90])
+colorbar('FontSize',15)
+ylabel('Latitude')
+xlabel('Longitude')
+titletext = ['v'', ' num2str(rC(i)) 'hPa']
+title(titletext);
+name= ['v_ed_000_l' num2str(i) '.png']
+print('-dpng',name)
+
+
+
+figure
+v=-12:1:12;
+[C,h] = contourf(xi,yi,t_ed_000_ll(:,:,i)',v);
+set(h,'LineColor','none')
+set(gca,'FontSize',15)
+hold on
+v = 0.1;
+[C,h] = contour(xi,yi,front_diag_000',v,'Color',[0.6,0.6,0.6],'LineWidth',2);
+colormap(b2r(-12,12));
+xlim([-180 180])
+ylim([0 90])
+colorbar('FontSize',15)
+ylabel('Latitude')
+xlabel('Longitude')
+titletext = ['T'', ' num2str(rC(i)) 'hPa']
+title(titletext);
+name= ['t_ed_000_l' num2str(i) '.png']
+print('-dpng',name)
+
+
+
+figure
+v=-160:10:160;
+[C,h] = contourf(xi,yi,vt_ed_100_ll(:,:,i)',v);
+set(h,'LineColor','none')
+set(gca,'FontSize',15)
+hold on
+v = 0.1;
+[C,h] = contour(xi,yi,front_diag_100',v,'Color',[0.6,0.6,0.6],'LineWidth',2);
+colormap(b2r(-140,140));
+xlim([-180 180])
+ylim([0 90])
+colorbar('FontSize',15)
+ylabel('Latitude')
+xlabel('Longitude')
+titletext = ['v''T'', ' num2str(rC(i)) 'hPa']
+title(titletext);
+name= ['vt_ed_100_l' num2str(i) '.png']
+print('-dpng',name)
+
+
+figure
+v=-25:2.5:25;
+[C,h] = contourf(xi,yi,vN_ed_100_ll(:,:,i)',v);
+set(h,'LineColor','none')
+set(gca,'FontSize',15)
+hold on
+v = 0.1;
+[C,h] = contour(xi,yi,front_diag_100',v,'Color',[0.6,0.6,0.6],'LineWidth',2);
+colormap(b2r(-25,25));
+xlim([-180 180])
+ylim([0 90])
+colorbar('FontSize',15)
+ylabel('Latitude')
+xlabel('Longitude')
+titletext = ['v'', ' num2str(rC(i)) 'hPa']
+title(titletext);
+name= ['v_ed_100_l' num2str(i) '.png']
+print('-dpng',name)
+
+figure
+v=-12:1:12;
+[C,h] = contourf(xi,yi,t_ed_100_ll(:,:,i)',v);
+set(h,'LineColor','none')
+set(gca,'FontSize',15)
+hold on
+v = 0.1;
+[C,h] = contour(xi,yi,front_diag_100',v,'Color',[0.6,0.6,0.6],'LineWidth',2);
+colormap(b2r(-12,12));
+xlim([-180 180])
+ylim([0 90])
+colorbar('FontSize',15)
+ylabel('Latitude')
+xlabel('Longitude')
+titletext = ['T'', ' num2str(rC(i)) 'hPa']
+title(titletext);
+name= ['t_ed_100_l' num2str(i) '.png']
+print('-dpng',name)
+
+
+close all
+end

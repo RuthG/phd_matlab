@@ -1,0 +1,7 @@
+load_friction_final_010
+load_friction_final_025
+load_friction_final_050
+load_friction_final_075
+load_friction_final_100
+load_friction_final_125
+load_friction_final_150

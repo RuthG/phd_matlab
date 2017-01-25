@@ -1,0 +1,11 @@
+$INPUT
+  wlinf = 4.005
+  wlsup = 100.0
+  wlinc = 0.005
+  idatm = 0
+  sza = 0
+  iout = 7
+  isalb = 0
+  albcon = 0.06
+  kdist = 3
+$end

@@ -1,0 +1,15 @@
+load('/project/rg312/mat_files/chapter2_variables/mombudg_tav_150.mat')
+
+tauE = tauE(:,:,10);
+tauN = tauN(:,:,10);
+uadvE = uadvE(:,:,:,10);
+vadvN = vadvN(:,:,:,10);
+uextE = uextE(:,:,:,10);
+vextN = vextN(:,:,:,10);
+urE = urE(:,:,:,10);
+vrN = vrN(:,:,:,10);
+uzE = uzE(:,:,:,10);
+vzN = vzN(:,:,:,10);
+vort3_tav = vort3_tav(:,:,:,10);
+
+save('/project/rg312/mat_files/chapter2_variables/mombudg_tav_150.mat')

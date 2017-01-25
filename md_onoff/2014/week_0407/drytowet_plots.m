@@ -1,0 +1,1 @@
+%load up data for dry to wet experiment and produce tidy spin-up plots of key fields

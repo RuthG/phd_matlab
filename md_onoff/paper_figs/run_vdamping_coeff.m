@@ -1,0 +1,8 @@
+[dcoeff_p, dcoeff_n, vNdvNdt_ed_p, vNdvNdt_ed_n, vN_var_p, vN_var_n] = vdamping_coeff_blayer_fun('000')
+[dcoeff_p, dcoeff_n, vNdvNdt_ed_p, vNdvNdt_ed_n, vN_var_p, vN_var_n] = vdamping_coeff_blayer_fun('010')
+[dcoeff_p, dcoeff_n, vNdvNdt_ed_p, vNdvNdt_ed_n, vN_var_p, vN_var_n] = vdamping_coeff_blayer_fun('025')
+[dcoeff_p, dcoeff_n, vNdvNdt_ed_p, vNdvNdt_ed_n, vN_var_p, vN_var_n] = vdamping_coeff_blayer_fun('050')
+[dcoeff_p, dcoeff_n, vNdvNdt_ed_p, vNdvNdt_ed_n, vN_var_p, vN_var_n] = vdamping_coeff_blayer_fun('075')
+[dcoeff_p, dcoeff_n, vNdvNdt_ed_p, vNdvNdt_ed_n, vN_var_p, vN_var_n] = vdamping_coeff_blayer_fun('100')
+[dcoeff_p, dcoeff_n, vNdvNdt_ed_p, vNdvNdt_ed_n, vN_var_p, vN_var_n] = vdamping_coeff_blayer_fun('125')
+[dcoeff_p, dcoeff_n, vNdvNdt_ed_p, vNdvNdt_ed_n, vN_var_p, vN_var_n] = vdamping_coeff_blayer_fun('150')

@@ -1,0 +1,13 @@
+$INPUT
+  wlinf = 14.005
+  wlsup = 100.0
+  wlinc = 0.005
+  idatm = 0
+  xco2 = 3600.0
+  sza =  13.0
+  iout = 11
+  isalb = 0
+  albcon = 0.06
+  kdist = 3
+  btemp =  297.1
+$end

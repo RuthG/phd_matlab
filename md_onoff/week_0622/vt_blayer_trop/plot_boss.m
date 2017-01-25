@@ -1,0 +1,34 @@
+vv_paper_plot_all_blayer_v
+close all
+clear
+vv_paper_plot_all_freetrop_v
+close all
+clear
+vv_paper_plot_all_trop_v
+clear
+close all
+
+return
+tt_paper_plot_all_blayer
+clear
+tt_paper_plot_all_freetrop
+clear
+tt_paper_plot_all_trop
+clear
+close all
+
+vt_paper_plot_all_blayer
+clear
+vt_paper_plot_all_freetrop
+clear
+vt_paper_plot_all_trop
+clear
+close all
+
+vH_paper_plot_all_blayer
+clear
+vH_paper_plot_all_freetrop
+clear
+vH_paper_plot_all_trop
+clear
+close all

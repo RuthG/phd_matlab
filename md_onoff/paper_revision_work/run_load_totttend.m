@@ -1,0 +1,7 @@
+load_totttend('000')
+load_totttend('010')
+load_totttend('025')
+load_totttend('050')
+load_totttend('075')
+load_totttend('125')
+load_totttend('150')

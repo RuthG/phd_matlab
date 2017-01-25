@@ -1,0 +1,138 @@
+%try coding up t_test...
+
+%start with u field, tropheat hw spinup run
+
+%need: mean of each
+%variance calculated using mean of each yr diff from mean
+%correlation of each year (does this make sense here?)
+
+
+%Read in iteration number, directory, MITgcm output and grid details
+
+rDir='/disk1/MITgcm/verification/atm_gray_ruth/wv_on_rad_off/run_60days_tropheat_hw/';
+
+xc=rdmds([rDir,'XC']);
+yc=rdmds([rDir,'YC']);
+xg=rdmds([rDir,'XG']);
+yg=rdmds([rDir,'YG']);
+hc=rdmds([rDir,'hFacC']);
+hw=rdmds([rDir,'hFacW']);
+hs=rdmds([rDir,'hFacS']);
+ar=rdmds([rDir,'RAC']);
+rC=squeeze(rdmds([rDir,'RC']));
+AngleCS=rdmds([rDir,'AngleCS']);
+AngleSN=rdmds([rDir,'AngleSN']);
+Grid='C';
+ny=90;
+
+
+%read fields
+i=0;
+for nit = 703440:240:705600;
+i=i+1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Full wv run%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+rDir='/disk1/MITgcm/verification/atm_gray_ruth/wv_on_rad_off/run_60days_tropheat_hw/';
+
+
+[dyn,iter,M]=rdmds([rDir,'dynDiag'],nit);  
+eval(M);
+
+J=find(strcmp(fldList,'UVEL    '));
+ucs_w(:,:,:,i) = dyn(:,:,:,J);
+J=find(strcmp(fldList,'VVEL    '));
+vcs_w(:,:,:,i) = dyn(:,:,:,J);
+[uE_w(:,:,:,i),vN_w(:,:,:,i)] = rotate_uv2uvEN(ucs_w(:,:,:,i),vcs_w(:,:,:,i),AngleCS,AngleSN,Grid);
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Half wv run%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+rDir='/disk1/MITgcm/verification/atm_gray_ruth/wv_on_rad_off/run_60days_tropheat_hw_control/';
+
+
+[dyn,iter,M]=rdmds([rDir,'dynDiag'],nit);  
+eval(M);
+
+J=find(strcmp(fldList,'UVEL    '));
+ucs_h(:,:,:,i) = dyn(:,:,:,J);
+J=find(strcmp(fldList,'VVEL    '));
+vcs_h(:,:,:,i) = dyn(:,:,:,J);
+[uE_h(:,:,:,i),vN_h(:,:,:,i)] = rotate_uv2uvEN(ucs_h(:,:,:,i),vcs_h(:,:,:,i),AngleCS,AngleSN,Grid);
+
+end
+
+[uE_w_zav,mskzon,ylat,areazon]=calcZonalAvgCube(uE_w,ny,yc,ar,hc);
+[uE_h_zav,mskzon,ylat,areazon]=calcZonalAvgCube(uE_h,ny,yc,ar,hc);
+
+uE_w_tzav = mean(uE_w_zav,3);
+uE_h_tzav = mean(uE_h_zav,3);
+
+
+%%%%% Do lag correlation
+
+N_pop = size(uE_w_zav,3);
+
+%calculate variance of each population for bottom part of lag covar
+for i=1:N_pop
+vardiff_w (:,:,i) = (uE_w_zav(:,:,i) - uE_w_tzav).^2;
+vardiff_h (:,:,i) = (uE_h_zav(:,:,i) - uE_h_tzav).^2;
+end
+
+lag = 0;
+
+%evaluate lag covar at each lag
+for lag=1:N_pop-1;
+
+%calculate top part of lag covar
+  for i=1:N_pop - lag;
+  top_w(:,:,i) = (uE_w_zav(:,:,i) - uE_w_tzav).*(uE_w_zav(:,:,i+lag) - uE_w_tzav);
+  top_h(:,:,i) = (uE_h_zav(:,:,i) - uE_h_tzav).*(uE_h_zav(:,:,i+lag) - uE_h_tzav);
+  end
+
+%evaluate lag covar
+  step_w(:,:) = sum(top_w,3)./sum(vardiff_w,3);
+  step_h(:,:) = sum(top_h,3)./sum(vardiff_h,3);
+
+%if this is negative, or if it has a negative value for a previous lag, set value to 0
+  step_w(find(step_w(:,:)<=0)) = 0;
+  step_h(find(step_h(:,:)<=0)) = 0;
+  if lag > 1
+  step_w(find(rl_w(:,:,lag-1) <=0 )) = 0;
+  step_h(find(rl_h(:,:,lag-1) <=0 )) = 0;
+  end
+
+%output lag covariances at each lag
+  rl_w(:,:,lag) = step_w(:,:);
+  rl_h(:,:,lag) = step_h(:,:);
+
+end
+
+for i=1:N_pop-1;
+T_part_w(:,:,i) = (1 - i./N_pop).*rl_w(:,:,i);
+T_part_h(:,:,i) = (1 - i./N_pop).*rl_h(:,:,i);
+end
+
+T0_w = 1 + 2.*sum(T_part_w,3);
+T0_h = 1 + 2.*sum(T_part_h,3);
+
+
+%%%%%%%%%%%%%%%%%%%
+n_w = N_pop./T0_w;
+n_h = N_pop./T0_h;
+
+var_weight_w = N_pop - T0_w;
+var_weight_h = N_pop - T0_h;
+
+var_w = sum(vardiff_w,3)./var_weight_w;
+var_h = sum(vardiff_h,3)./var_weight_h;
+
+
+%%%%% initial t calculation...
+T = (uE_w_tzav - uE_h_tzav)./sqrt(var_w./n_w + var_h./n_h);
+
+DF = (var_w./n_w + var_h./n_h).^2./( (var_w./n_w).^2./(n_w-1) + (var_h./n_h).^2./(n_h-1) ) ;
+
+%%% significance (one sided statistics? whatever that means...)
+
+p = tcdf(abs(T),DF);

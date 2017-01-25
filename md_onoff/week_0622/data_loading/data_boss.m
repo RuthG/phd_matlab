@@ -1,0 +1,6 @@
+vt_lats_final
+clear
+blayer_final
+clear
+tropopause_final
+clear
